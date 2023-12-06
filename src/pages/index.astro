@@ -23,7 +23,7 @@ const texts = await Astro.glob("../assets/*.json");
   const content = document.querySelector("#content");
   const container = document.querySelector("#container");
 
-  if (new Date().getDay() != 3) {
+  if (new Date().getDay() !== 3) {
     if (container) {
       container.innerHTML = "";
     }
@@ -45,9 +45,7 @@ const texts = await Astro.glob("../assets/*.json");
 </script>
 
 <Layout title="It's Wednesday my dudes!">
-  <main
-    class="flex flex-col justify-center items-center h-screen w-screen gap-8"
-  >
+  <main class="flex flex-col justify-center items-center h-full w-screen gap-8">
     <h1
       id="content"
       class="text-4xl bg-clip-text text-center text-transparent font-extrabold from-amber-200 to-lime-300 bg-gradient-to-r"
