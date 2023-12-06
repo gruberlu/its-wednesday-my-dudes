@@ -54,12 +54,12 @@ const images = await Astro.glob("../assets/*.png");
     </h1>
     <div
       id="container"
-      class="flex gap-10 max-w-2xl overflow-x-scroll snap-x snap-mandatory p-5"
+      class="flex gap-10 overflow-x-scroll snap-x snap-mandatory p-5 max-w-full sm:max-w-2xl"
     >
       {
         images.map((image) => (
           <Image
-            class="max-w-md rounded-sm snap-center"
+            class="max-w-[inherit] rounded-sm snap-center object-contain sm:max-w-md"
             src={image.default}
             alt="a funny image"
           />
