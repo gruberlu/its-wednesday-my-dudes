@@ -4,14 +4,15 @@ on:
   schedule:
     - cron: '0 0 * * 3'
   workflow_dispatch:
-# Environment variables
-env:
-  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-  OPENAI_PROMPT: ${{ vars.OPENAI_PROMPT }}
 # Jobs that run in parallel
 jobs:
   generate:
     runs-on: ubuntu-latest
+    environment: wednesday
+    # Environment variables
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_PROMPT: ${{ vars.OPENAI_PROMPT }}
     steps:
       - uses: actions/checkout@v4
         with:
