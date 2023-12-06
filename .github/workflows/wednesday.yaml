@@ -1,0 +1,31 @@
+name: It's Wednesday my dudes!
+# Events that trigger the workflow
+on:
+  schedule:
+    - cron: '0 0 * * 3'
+  workflow_dispatch:
+# Environment variables
+env:
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  OPENAI_PROMPT: ${{ vars.OPENAI_PROMPT }}
+# Jobs that run in parallel
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_ACCESS_TOKEN }}
+      - name: Make script executable
+        run: |
+          chmod +x scripts/generate_image.sh
+      - name: Generate image
+        run: |
+          ./scripts/generate_image.sh
+      - name: Commit and push if successful
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "github-actions@github.com"
+          git add .
+          git commit -m "Generated image on $(date)"
+          git push
