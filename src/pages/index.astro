@@ -1,0 +1,70 @@
+---
+import { Image } from "astro:assets";
+import Layout from "../layouts/Layout.astro";
+
+const images = await Astro.glob("../assets/*.png");
+---
+
+<script>
+  function getSecondsToWednesday() {
+    const currentDate = new Date();
+    const currentDay = currentDate.getDay();
+    const daysUntilWednesday = (3 - currentDay + 7) % 7;
+    const nextWednesday = new Date(currentDate);
+    nextWednesday.setDate(currentDate.getDate() + daysUntilWednesday);
+    nextWednesday.setHours(0, 0, 0, 0);
+    const remainingTimeInSeconds = Math.floor(
+      (Number(nextWednesday) - Number(currentDate)) / 1000
+    );
+    return remainingTimeInSeconds;
+  }
+
+  const content = document.querySelector("#content");
+  const container = document.querySelector("#container");
+
+  if (new Date().getDay() != 3) {
+    if (container) {
+      container.innerHTML = "";
+    }
+    setInterval(() => {
+      const seconds = getSecondsToWednesday();
+      const remainingDays = Math.floor(seconds / (24 * 3600));
+      const remainingHours = Math.floor((seconds % (24 * 3600)) / 3600);
+      const remainingMinutes = Math.floor((seconds % 3600) / 60);
+      const remainingSeconds = seconds % 60;
+      if (content) {
+        content.innerHTML = `${remainingDays} days, ${remainingHours} hours, ${remainingMinutes} minutes and ${remainingSeconds} seconds 'til next Wednesday!`;
+      }
+    }, 1000);
+  } else {
+    if (content) {
+      content.innerHTML = "IT'S WEDNESDAY MY DUDES!";
+    }
+  }
+</script>
+
+<Layout title="It's Wednesday my dudes!">
+  <main
+    class="flex flex-col justify-center items-center h-screen w-screen gap-8"
+  >
+    <h1
+      id="content"
+      class="text-4xl bg-clip-text text-center text-transparent font-extrabold from-amber-200 to-lime-300 bg-gradient-to-r"
+    >
+    </h1>
+    <div
+      id="container"
+      class="flex gap-10 max-w-2xl overflow-x-scroll snap-x snap-mandatory p-5"
+    >
+      {
+        images.map((image) => (
+          <Image
+            class="max-w-md rounded-sm snap-center"
+            src={image.default}
+            alt="a funny image"
+          />
+        ))
+      }
+    </div>
+  </main>
+</Layout>
