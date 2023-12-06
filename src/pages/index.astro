@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
 
 const images = await Astro.glob("../assets/*.png");
+const texts = await Astro.glob("../assets/*.json");
 ---
 
 <script>
@@ -57,11 +58,12 @@ const images = await Astro.glob("../assets/*.png");
       class="flex gap-10 overflow-x-scroll snap-x snap-mandatory p-5 max-w-full sm:max-w-2xl"
     >
       {
-        images.map((image) => (
+        images.map((image, idx) => (
           <Image
             class="max-w-[inherit] rounded-sm snap-center object-contain sm:max-w-md"
             src={image.default}
             alt="a funny image"
+            title={texts[idx].text}
           />
         ))
       }

@@ -31,7 +31,7 @@ URL=$(echo "$RESPONSE" | jq .data[0].url -r)
 REVISED_PROMPT=$(echo "$RESPONSE" | jq .data[0].revised_prompt -r)
 
 curl "$URL" -o "src/assets/$(date "+%s").png"
-echo "$REVISED_PROMPT" > "src/assets/$(date "+%s").txt"
+echo "{\"text\": \"$REVISED_PROMPT\"}" > "src/assets/$(date "+%s").json"
 
 # Check if curl was successful
 if [ $? -eq 0 ]; then
