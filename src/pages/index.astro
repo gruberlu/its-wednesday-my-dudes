@@ -56,6 +56,54 @@ const texts = await Astro.glob("../assets/*.json");
   }
 </script>
 
+<script>
+  class ForwardButton extends HTMLElement {
+    constructor() {
+      super();
+      // TODO refactor this part
+      const max = Number.parseInt(this.dataset.max || "0");
+      const button = this.querySelector("button");
+      button?.addEventListener("click", () => {
+        const url = window.location.href;
+        const match = url.match(/#img-(\d+)/);
+        if (match && match[1]) {
+          let img = +match[1];
+          if (img >= max) {
+            img = max - 1;
+          }
+          window.location.href = url.replace(`#img-${img}`, `#img-${img + 1}`);
+        } else {
+          window.location.href = url + "#img-1";
+        }
+      });
+    }
+  }
+
+  class Backbutton extends HTMLElement {
+    constructor() {
+      super();
+      // TODO refactor this part
+      const button = this.querySelector("button");
+      button?.addEventListener("click", () => {
+        const url = window.location.href;
+        const match = url.match(/#img-(\d+)/);
+        if (match && match[1]) {
+          let img = +match[1];
+          if (img === 0) {
+            img = 1;
+          }
+          window.location.href = url.replace(`#img-${img}`, `#img-${img - 1}`);
+        } else {
+          window.location.href = url + "#img-0";
+        }
+      });
+    }
+  }
+
+  customElements.define("forward-button", ForwardButton);
+  customElements.define("back-button", Backbutton);
+</script>
+
 <Layout title="It's Wednesday my dudes!">
   <main class="flex flex-col justify-center items-center h-full w-screen gap-8">
     <h1
@@ -65,11 +113,11 @@ const texts = await Astro.glob("../assets/*.json");
     </h1>
     <div
       id="container"
-      class="hidden gap-10 overflow-x-scroll p-5 max-w-full sm:max-w-2xl"
+      class="hidden gap-10 overflow-x-scroll p-6 md:p-10 max-w-full sm:max-w-2xl min-h-[400px]"
     >
-      <div class="m-auto relative max-w-md">
+      <div class="m-auto relative md:max-w-sm max-w-xs">
         <div
-          class="flex overflow-x-auto aspect-square max-h-[80%] gap-10 snap-x snap-mandatory scroll-smooth rounded-sm"
+          class="flex overflow-x-auto aspect-square max-h-[80%] gap-10 no-scrollbar snap-x snap-mandatory scroll-smooth rounded-sm"
         >
           {
             images.map((image, idx) => (
@@ -84,17 +132,30 @@ const texts = await Astro.glob("../assets/*.json");
           }
         </div>
         <nav
-          class="flex gap-4 absolute z-10 -translate-x-1/2 left-1/2 -bottom-5"
+          class="flex gap-4 absolute z-10 -translate-x-1/2 left-1/2 -bottom-10"
         >
-          {
-            images.map((_, idx) => (
-              <a
-                class="rounded-full bg-white opacity-75 h-2 w-2 ease-linear transition-opacity hover:opacity-100"
-                href={`#img-${idx}`}
-                class=""
-              />
-            ))
-          }
+          <a
+            class="text-neutral-400 hover:text-neutral-100 ease-out duration-200"
+            title="go to start"
+            href="#img-0">Monday</a
+          >
+          <back-button>
+            <button
+              class="text-neutral-400 hover:text-neutral-100 ease-out duration-200"
+              title="go back">Tuesday</button
+            >
+          </back-button>
+          <forward-button data-max={images.length - 1}>
+            <button
+              class="text-neutral-400 hover:text-neutral-100 ease-out duration-200"
+              title="go forward">Thursday</button
+            >
+          </forward-button>
+          <a
+            class="text-neutral-400 hover:text-neutral-100 ease-out duration-200"
+            title="go to end"
+            href={`#img-${images.length - 1}`}>Sunday</a
+          >
         </nav>
       </div>
     </div>
