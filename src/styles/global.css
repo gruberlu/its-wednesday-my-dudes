@@ -10,4 +10,7 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
+    .animation-delay-3000 {
+        animation-delay: 3s;
+    }
 }
