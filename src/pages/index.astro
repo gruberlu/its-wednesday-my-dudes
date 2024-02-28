@@ -120,15 +120,17 @@ const texts = await Astro.glob("../assets/*.json");
           class="flex overflow-x-auto aspect-square max-h-[80%] gap-10 no-scrollbar snap-x snap-mandatory scroll-smooth rounded-sm"
         >
           {
-            images.map((image, idx) => (
-              <Image
-                id={`img-${idx}`}
-                class="snap-center flex-shrink-0 flex-grow"
-                src={image.default}
-                alt="a funny image"
-                title={texts[idx].text}
-              />
-            ))
+            images
+              .reverse()
+              .map((image, idx) => (
+                <Image
+                  id={`img-${idx}`}
+                  class="snap-center flex-shrink-0 flex-grow"
+                  src={image.default}
+                  alt="a funny image"
+                  title={texts[idx].text}
+                />
+              ))
           }
         </div>
         <nav
