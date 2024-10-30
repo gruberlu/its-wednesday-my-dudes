@@ -1,8 +1,8 @@
 name: It's Wednesday my dudes!
 # Events that trigger the workflow
 on:
-  schedule:
-    - cron: '0 0 * * 3'
+  # schedule:
+  #   - cron: '0 0 * * 3'
   workflow_dispatch:
 # Jobs that run in parallel
 jobs:
